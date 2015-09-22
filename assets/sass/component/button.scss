@@ -1,0 +1,7 @@
+.btn {
+    transition: .2s;
+}
+
+a + .btn {
+    margin-top: 15px;
+}

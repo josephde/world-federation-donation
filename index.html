@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>World Federation of KSIMC Payment System</title>
+    <link href="assets/css/main.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="donation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                <div class="pull-right">
+                    <div class="island--micro">
+                        <label for="currency">Currency</label>
+                        <select name="currency" id="currency">
+                            <option value="GBP">GBP</option>
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="clear"></div>
+
+                <div class="panel panel-default panel-donation">
+                    <div class="panel-body">
+                        <h1 class="panel-heading text-center">Make a donation or payment</h1>
+                        <form action="">
+                            <label for="general-donation">Donate to the general fund</label>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="input-icon-container">
+                                            <span class="input-icon">&pound;</span>
+                                            <input id="general-donation" type="number" placeholder="Enter an amount" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="submit" class="btn btn-primary btn-block" value="Donate">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="choice-divider">
+                            <span class="choice-divider__text">Or</span>
+                        </div>
+
+                        <label for="search-campaigns">Search for a campaign or cause</label>
+                        <form action="">
+                            <div class="form-group search-input input-icon-container">
+                                <span class="input-icon glyphicon glyphicon-search" aria-hidden="true"></span>
+                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="value: searchQuery" placeholder="Search for a campaign or cause">
+                            </div>
+                        </form>
+
+                        <div class="island island--bordered">
+                            <h3 class="panel-subheading">Yemen Appeal</h3>
+                            <p class="text--muted">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
+                            <form action="">
+                                <label for="campaign1">Payment</label>
+                                <div class="form-group input-icon-container">
+                                    <div class="input-icon-container">
+                                        <span class="input-icon">&pound;</span>
+                                        <input id="campaign1" type="number" placeholder="Enter an amount" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-default btn-block" value="Add to your payments">
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a class="link--underlined" data-bind="click: toggleCampaignList" href="#"> 
+                                <span data-bind="visible: !showAllCampaigns()">Show</span> <span data-bind="visible: showAllCampaigns">Hide</span> all campaigns and causes
+                            </a>
+                        </div>
+
+                        <div class="island island--bordered" data-bind="visible: showAllCampaigns">
+                            <!-- ko foreach: campaignsData -->
+                                <h3 class="panel-subheading" data-bind="text: name"></h3>
+                                <p class="text--muted" data-bind="text: description"></p>
+                                <form action="">
+                                    <label for="campaign1">Payment</label>
+                                    <div class="form-group input-icon-container">
+                                        <div class="input-icon-container">
+                                            <span class="input-icon">&pound;</span>
+                                            <input id="campaign1" value="20.00" type="number" placeholder="Enter an amount" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-disabled btn-block" value="Add to your payments">
+                                    </div>
+                                </form>
+                                <hr>
+                            <!-- /ko -->
+                        </div>
+
+                        <hr>
+
+                        <h2 class="heading--bold">Your donations or payments</h2>
+
+                        <div class="island island--bordered island--standout">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h3 class="panel-subheading">Yemen Appeal</h3>
+                            <p class="text--muted">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
+                            <form action="">
+                                <label for="campaign2">Payment</label>
+                                <div class="form-group input-icon-container">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="input-icon-container">
+                                                <span class="input-icon">&pound;</span>
+                                                <input id="campaign2" type="number" value="20.00" placeholder="Enter an amount" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input type="submit" class="btn btn-default btn-block" value="Update">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="pull-right">
+                            <div class="text--highlight">Total: &pound;20.00</div>
+                        </div>
+
+                        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Make Payment">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="assets/bower_components/knockout/dist/knockout.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

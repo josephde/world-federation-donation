@@ -1,0 +1,24 @@
+.panel-heading {
+    font-size: 22px;
+    font-weight: 300;
+    margin: 0 0 30px;
+    padding: 0;
+}
+
+.panel-subheading {
+    color: #222; // TODO: Variable
+    font-size: 15px;
+    font-weight: normal;
+    margin-top: 0;
+}
+
+.panel-donation {
+    border: solid 2px $brand-color2;
+    padding: 40px 60px 45px;
+    .panel-body {
+        padding: 0;
+    }
+    @media (max-width: $screen-xs-max) {
+        padding: 20px;
+    }
+}

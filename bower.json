@@ -1,0 +1,21 @@
+{
+  "name": "world-federation-donation",
+  "version": "0.0.0",
+  "authors": [
+    "Carl Wood <c@shedcollective.org>"
+  ],
+  "description": "World Federation of KSIMC Donation System",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "~3.3.5",
+    "knockout": "~3.3.0"
+  }
+}

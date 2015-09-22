@@ -1,0 +1,31 @@
+body {
+    color: #555;
+}
+
+.link--underlined {
+    color: $brand-color3;
+    border-bottom: solid 1px $brand-color3;
+    padding-bottom: 2px;
+    &:hover,
+    &:focus {
+        border-bottom-color: darken($brand-color3, 10%);
+        text-decoration: none;
+    }
+}
+
+.heading--bold {
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.text--muted {
+    color: #aaa;
+}
+
+.text--highlight {
+    color: $brand-color3;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0 20px;
+}

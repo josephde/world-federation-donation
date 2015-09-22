@@ -1,0 +1,44 @@
+// Project base colours and variables
+@import 'base/palette';
+@import 'base/variables';
+
+// Include essential Bootstrap stylesheets
+// Bootstrap  variables and mixins
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+
+// Bootstrap reset
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/normalize';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/print';
+
+// Bootstrap core
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/type';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/grid';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/forms';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/buttons';
+
+// Bootstrap components
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/close';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/component-animations';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/navbar';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/alerts';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/panels';
+
+// Bootstrap utility
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/utilities';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities';
+
+@import 'base/helper';
+@import 'base/type';
+@import 'component/button';
+@import 'component/form';
+@import 'component/island';
+@import 'component/panel';
+
+.donation {
+    background: $brand-color1;
+    padding: 50px 0;
+}

@@ -1,0 +1,54 @@
+label {
+    color: #222;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.form-control:focus {
+    border: solid 1px $brand-color3;
+    box-shadow: none;
+}
+
+.choice-divider {
+    border-top: solid 1px #ddd;
+    margin: 20px 0;
+    position: relative;
+}
+
+.choice-divider__text {
+    background: #fff;
+    display: inline-block;
+    padding: 0 17.5px;
+    position: absolute;
+    // Centre vertically and horizontall
+    top: 50%; left: 50%;
+    margin: -10px 0 0 -22px;
+}
+
+.input-icon-container {
+    position: relative;
+    .input-icon {
+        color: #aaa;
+        left: 12px;
+        top: 12.5px;
+        position: absolute;
+    }
+    input[type=search],
+    input[type=number] {
+        padding-left: 25px;
+    }
+}
+
+.search-input {
+    .input-icon {
+        top: 17px;
+    }
+    input[type=search],
+    input[type=number] {
+        padding-left: 32.5px;
+    }
+}
+
+.island .form-group:last-child {
+    margin: 0;
+}

@@ -1,0 +1,21 @@
+.island {
+    border-radius: 2px;
+    padding: 15px;
+}
+
+.island--micro {
+    padding: 5px 10px;
+}
+
+.island--bordered {
+    border: solid 1px #ddd;
+    margin: 15px 0;
+}
+
+.island--standout {
+    background: $brand-color5;
+    border: solid 2px $brand-color4;
+    .close {
+        margin-top: -5px;
+    }
+}
