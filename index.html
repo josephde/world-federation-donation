@@ -42,7 +42,7 @@
                                     <div class="col-sm-9">
                                         <div class="input-icon-container">
                                             <span class="input-icon">&pound;</span>
-                                            <input id="general-donation" type="number" placeholder="Enter an amount" class="form-control">
+                                            <input data-bind="textInput: generalDonation, valueUpdate: 'afterkeydown'" id="general-donation" type="number" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -60,34 +60,48 @@
                         <form action="">
                             <div class="form-group search-input input-icon-container">
                                 <span class="input-icon glyphicon glyphicon-search" aria-hidden="true"></span>
-                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="value: searchQuery" placeholder="Search for a campaign or cause">
+                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="textInput: campaignSearch, valueUpdate: 'afterkeydown'" placeholder="Search for a campaign or cause">
+                                <!-- ko if: (campaignSearch().length && showSearchResults) -->
+                                    <div class="search-dropdown" 
+                                         data-bind="foreach: filteredCampaigns">
+                                        <div tabindex="10" class="search-result" data-bind="text: name, click: $parent.selectCampaign">
+                                        </div>
+                                    </div>
+                                <!-- /ko -->
                             </div>
                         </form>
-
-                        <div class="island island--bordered">
-                            <h3 class="panel-subheading">Yemen Appeal</h3>
-                            <p class="text--muted">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
-                            <form action="">
-                                <label for="campaign1">Payment</label>
-                                <div class="form-group input-icon-container">
-                                    <div class="input-icon-container">
-                                        <span class="input-icon">&pound;</span>
-                                        <input id="campaign1" type="number" placeholder="Enter an amount" class="form-control">
+                        
+                        <!-- ko foreach: selectedCampaigns -->
+                            <div class="island island--bordered">
+                                <button data-bind="click: $parent.deselectCampaign" type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h3 class="panel-subheading" data-bind="text: name"></h3>
+                                <p class="text--muted" data-bind="text: description">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
+                                <form action="">
+                                    <label for="campaign1">Payment</label>
+                                    <div class="form-group input-icon-container">
+                                        <div class="input-icon-container">
+                                            <span class="input-icon">&pound;</span>
+                                            <input data-bind="textInput: donation, valueUpdate: 'afterkeydown'" type="number" placeholder="Enter an amount" class="form-control">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" class="btn btn-default btn-block" value="Add to your payments">
-                                </div>
-                            </form>
-                        </div>
+                                    <div class="form-group">
+                                        <input type="submit" data-bind="click: $parent.submitCampaignPayment" class="btn btn-default btn-block" value="Add to your payments">
+                                    </div>
+                                </form>
+                            </div>
+                        <!-- /ko -->
+
                         <div>
                             <a class="link--underlined" data-bind="click: toggleCampaignList" href="#"> 
                                 <span data-bind="visible: !showAllCampaigns()">Show</span> <span data-bind="visible: showAllCampaigns">Hide</span> all campaigns and causes
                             </a>
                         </div>
 
+
                         <div class="island island--bordered" data-bind="visible: showAllCampaigns">
-                            <!-- ko foreach: campaignsData -->
+                            <!-- ko foreach: campaigns -->
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description"></p>
                                 <form action="">
@@ -95,7 +109,7 @@
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
                                             <span class="input-icon">&pound;</span>
-                                            <input id="campaign1" value="20.00" type="number" placeholder="Enter an amount" class="form-control">
+                                            <input id="campaign1" data-bind="textInput: donation"  type="number" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -107,35 +121,40 @@
                         </div>
 
                         <hr>
-
-                        <h2 class="heading--bold">Your donations or payments</h2>
-
-                        <div class="island island--bordered island--standout">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                            <h3 class="panel-subheading">Yemen Appeal</h3>
-                            <p class="text--muted">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
-                            <form action="">
-                                <label for="campaign2">Payment</label>
-                                <div class="form-group input-icon-container">
-                                    <div class="row">
-                                        <div class="col-sm-9">
-                                            <div class="input-icon-container">
-                                                <span class="input-icon">&pound;</span>
-                                                <input id="campaign2" type="number" value="20.00" placeholder="Enter an amount" class="form-control">
+                        
+                        <!-- ko if: donatedCampaigns().length -->
+                            <h2 class="heading--bold">Your donations or payments</h2>
+                        <!-- /ko -->
+                        
+                        <!-- ko foreach: donatedCampaigns -->
+                            <div class="island island--bordered island--standout">
+                                <button data-bind="click: $parent.removePayment" type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h3 class="panel-subheading" data-bind="text: name"></h3>
+                                <p class="text--muted" data-bind="text: description"></p>
+                                <form action="">
+                                    <label for="campaign2">Payment</label>
+                                    <div class="form-group input-icon-container">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <div class="input-icon-container">
+                                                    <span class="input-icon">&pound;</span>
+                                                    <input data-bind="textInput: donation" id="campaign2" type="number" placeholder="Enter an amount" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="submit" class="btn btn-default btn-block" value="Update">
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <input type="submit" class="btn btn-default btn-block" value="Update">
-                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
+                        <!-- /ko -->
 
                         <div class="pull-right">
-                            <div class="text--highlight">Total: &pound;20.00</div>
+                            <div class="text--highlight" data-bind="if: total">Total: &pound;<span data-bind="text: twoDecimalPlaces(total())"></span>
+                            </div>
                         </div>
 
                         <input type="submit" class="btn btn-primary btn-lg btn-block" value="Make Payment">
