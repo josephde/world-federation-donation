@@ -1,4 +1,4 @@
-// Utility and extenders
+// ***** UTILITIES AND EXTENDERS  ***** //
 
 ko.utils.stringStartsWith = function(string, startsWith) {
     string = string || "";
