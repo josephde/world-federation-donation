@@ -2,12 +2,15 @@
 
 /**
  * This file will receive:
+ *
  *   $_POST['cart_id']
  *   $_POST['currency']
  *   $_POST['totalGeneral']
  *   $_POST['totalCampaigns']
  *
- * Use this file to send the user off to the payment gateway.
+ * Use this file to send the user off to the payment gateway. This is where
+ * you'd create database entries etc then populate the form below, which gets
+ * automatically submitted.
  */
 
 ?><!DOCTYPE html>
@@ -32,24 +35,24 @@
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
                 <div class="panel panel-default panel-donation">
-                    <div class="panel-body">
-                        <h1>Goto Gateway</h1>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                            deserunt mollit anim id est laborum.
+                    <div class="panel-body loading" id="main-panel">
+                        <p class="loading text-center">
+                            <img src="<?=$baseUrl?>assets/img/loader.gif" />
                         </p>
                         <form method="POST" action="<?=$baseUrl?>">
-                            <input type="hidden" name="route" value="thanks">
-                            <input type="submit" value="Go To Thanks Page">
+                            <input type="hidden" name="route" value="gateway">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+
+        setTimeout(function() {
+            window.document.forms[0].submit();
+        }, 1000);
+
+    </script>
 </body>
 </html>

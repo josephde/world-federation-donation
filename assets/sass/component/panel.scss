@@ -22,3 +22,18 @@
         padding: 20px;
     }
 }
+
+.panel-body {
+    > p.loading {
+        display: none;
+    }
+    &.loading {
+        > * {
+            display: none;
+        }
+        > p.loading {
+            display: block;
+            margin: 0;
+        }
+    }
+}

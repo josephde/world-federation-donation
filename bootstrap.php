@@ -45,7 +45,7 @@ $currencies = array(
  *          but go ahead and update the lorem ipsum.
  */
 $campaignsGeneral = array(
-    'name'        => 'Donation',
+    'name'        => 'General Donation',
     'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'department'  => 'Donation'
 );

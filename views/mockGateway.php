@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Use this file to render the thank you page and any associated details.
+ * This file acts as a mock payment gateway page.
  */
 
 ?><!DOCTYPE html>
@@ -30,15 +30,15 @@
                         <p class="loading text-center">
                             <img src="<?=$baseUrl?>assets/img/loader.gif" />
                         </p>
-                        <h1 class="text-center">Thanks</h1>
-                        <p class="text-center">
-                            Your payment has been received.
+                        <h1 class="text-center">Enter Your Card Details</h1>
+                        <p class="text-center alert alert-message">
+                            This is the page on the hosted payment gateway where
+                            the user would enter their payment details.
                         </p>
-                        <p class="text-center">
-                            <a href="<?=$baseUrl?>">
-                                Continue
-                            </a>
-                        </p>
+                        <form method="POST" action="<?=$baseUrl?>">
+                            <input type="hidden" name="route" value="thanks">
+                            <input type="submit" value="Submit Payment" class="btn btn-primary btn-block">
+                        </form>
                     </div>
                 </div>
             </div>

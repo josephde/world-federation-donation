@@ -35,7 +35,10 @@
                 <div class="clear"></div>
 
                 <div class="panel panel-default panel-donation">
-                    <div class="panel-body">
+                    <div class="panel-body loading" id="main-panel">
+                        <p class="loading text-center">
+                            <img src="<?=$baseUrl?>assets/img/loader.gif" />
+                        </p>
                         <h1 class="panel-heading text-center">Make a donation or payment</h1>
                         <form action="#" data-bind="submit: addToGeneralFund">
                             <label for="general-donation">Donate to the general fund</label>

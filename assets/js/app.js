@@ -160,6 +160,9 @@ var donationViewModel = function(currencies, general, campaigns) {
 
         $('#main-form').submit();
     };
+
+    // ***** READY  ***** //
+    $('#main-panel').removeClass('loading');
 };
 
 ko.applyBindings(

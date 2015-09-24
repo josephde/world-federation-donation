@@ -12,6 +12,10 @@ switch ($route) {
         require 'views/gotoGateway.php';
         break;
 
+    case 'gateway':
+        require 'views/mockGateway.php';
+        break;
+
     case 'thanks':
         require 'views/thanks.php';
         break;
