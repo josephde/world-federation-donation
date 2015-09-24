@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<?php
+
+/**
+ * Use this file to render the main donation page
+ */
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -6,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>World Federation of KSIMC Payment System</title>
-    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="<?=$baseUrl?>assets/css/main.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,7 +37,7 @@
                 <div class="panel panel-default panel-donation">
                     <div class="panel-body">
                         <h1 class="panel-heading text-center">Make a donation or payment</h1>
-                        <form action="" data-bind="submit: addToGeneralFund">
+                        <form action="#" data-bind="submit: addToGeneralFund">
                             <label for="general-donation">Donate to the general fund</label>
                             <div class="form-group">
                                 <div class="row">
@@ -53,12 +59,12 @@
                         </div>
 
                         <label for="search-campaigns">Search for a campaign or cause</label>
-                        <form action="" data-bind>
+                        <form action="#">
                             <div class="form-group search-input input-icon-container">
                                 <span class="input-icon glyphicon glyphicon-search" aria-hidden="true"></span>
-                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="textInput: campaignSearch, valueUpdate: 'afterkeydown'" required="required" placeholder="Search for a campaign or cause">
+                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="textInput: campaignSearch, valueUpdate: 'afterkeydown'" required="required" autocomplete="off" placeholder="Search for a campaign or cause">
                                 <!-- ko if: (campaignSearch().length && showSearchResults) -->
-                                    <ul class="search-dropdown list-unstyled" 
+                                    <ul class="search-dropdown list-unstyled"
                                          data-bind="foreach: filteredCampaigns">
                                         <li>
                                             <a class="search-result" data-bind="text: name, click: $parent.selectCampaign"></a>
@@ -67,7 +73,7 @@
                                 <!-- /ko -->
                             </div>
                         </form>
-                        
+
                         <!-- ko foreach: selectedCampaigns -->
                             <div class="island island--bordered">
                                 <button data-bind="click: $parent.deselectCampaign" type="button" class="close" aria-label="Close">
@@ -75,7 +81,7 @@
                                 </button>
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
-                                <form action="" data-bind="submit: $parent.submitCampaignPayment">
+                                <form action="#" data-bind="submit: $parent.submitCampaignPayment">
                                     <label for="campaign1">Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
@@ -91,7 +97,7 @@
                         <!-- /ko -->
 
                         <div>
-                            <a class="link--underlined" data-bind="click: toggleCampaignList" href="#"> 
+                            <a class="link--underlined" data-bind="click: toggleCampaignList" href="#">
                                 <span data-bind="visible: !showAllCampaigns()">Show</span> <span data-bind="visible: showAllCampaigns">Hide</span> all campaigns and causes
                             </a>
                         </div>
@@ -101,7 +107,7 @@
                             <!-- ko foreach: campaigns -->
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description"></p>
-                                <form action="" data-bind="submit: $parent.submitCampaignPayment">
+                                <form action="#" data-bind="submit: $parent.submitCampaignPayment">
                                     <label>Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
@@ -118,11 +124,11 @@
                         </div>
 
                         <hr>
-                        
+
                         <!-- ko if: donatedCampaigns().length || general().donation() -->
                             <h2 class="heading--bold">Your donations or payments</h2>
                         <!-- /ko -->
-                        
+
                         <!-- ko if: general().donation() -->
                             <div class="island island--bordered island--standout">
                                 <button data-bind="click: removeGeneralDonation" type="button" class="close" aria-label="Close">
@@ -175,7 +181,7 @@
                                 </form>
                             </div>
                         <!-- /ko -->
-                        
+
                         <!-- ko if: donatedCampaigns().length || general().donation() -->
                             <div class="pull-right">
                                 <div class="text--highlight">
@@ -192,8 +198,25 @@
             </div>
         </div>
     </div>
-    <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="assets/bower_components/knockout/dist/knockout.js"></script>
+    <form action="<?=$baseUrl?>" method="POST" id="main-form">
+        <input type="hidden" name="route" value="gotoGateway" />
+        <input type="hidden" name="cart_id" value="<?=session_id()?>" >
+        <input type="hidden" name="currency" value="" />
+        <input type="hidden" name="total" value="" />
+        <input type="hidden" name="totalGeneral" value="" />
+        <input type="hidden" name="totalCampaigns" value="" />
+    </form>
+    <script src="<?=$baseUrl?>assets/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="<?=$baseUrl?>assets/bower_components/knockout/dist/knockout.js"></script>
+    <script type="text/javascript">
+
+        window.donation = {
+            'currencies': <?=json_encode($currencies)?>,
+            'campaignsAll': <?=json_encode($campaignsAll)?>,
+            'campaignsGeneral': <?=json_encode($campaignsGeneral)?>,
+        };
+
+    </script>
     <script src="assets/js/app.js"></script>
 </body>
 </html>

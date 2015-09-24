@@ -9,11 +9,11 @@ ko.utils.stringStartsWith = function(string, startsWith) {
 ko.extenders.numeric = function(target, precision) {
     var result = ko.dependentObservable({
         read: function() {
-            return target().toFixed(precision); 
+            return target().toFixed(precision);
         },
-        write: target 
+        write: target
     });
-    
+
     result.raw = target;
     return result;
 };
@@ -27,19 +27,29 @@ var Campaign = function(name, description, department, donation) {
     self.donation = donation;
 };
 
-var donationViewModel = function(general, campaigns) {
+var donationViewModel = function(currencies, general, campaigns) {
     var self = this;
 
     // ***** INSTANTIATE ARRAYS AND VARS  ***** //
 
-    // Currency picker
-    self.currencies = ko.observableArray([
-        { name: 'GBP', symbol: '£' },
-        { name: 'EUR', symbol: '€' },
-        { name: 'USD', symbol: '$' }
-    ]);
+    //  Set up observables
+    general.donation = ko.observable(0);
 
-    selectedCurrency = ko.observable();
+    for (var i = 0; i < campaigns.length; i++) {
+
+        campaigns[i].donation = ko.observable(0);
+    }
+
+    // Currency picker
+    self.currencies = ko.observableArray(currencies);
+
+    // Set the default currency
+    for (var i = 0; i < currencies.length; i++) {
+
+        if (currencies[i].selected) {
+            selectedCurrency = ko.observable(self.currencies()[i]);
+        }
+    }
 
     // Grand total
     self.totalDonation = ko.observable(0).extend({ numeric: 2});
@@ -108,7 +118,7 @@ var donationViewModel = function(general, campaigns) {
 
     // Toggle visibility of all campaigns
     self.toggleCampaignList =  function() {
-        self.showAllCampaigns(!self.showAllCampaigns()); 
+        self.showAllCampaigns(!self.showAllCampaigns());
     };
 
     // ***** REMOVING DONATIONS  ***** //
@@ -134,79 +144,28 @@ var donationViewModel = function(general, campaigns) {
         for (var i = 0; i < obj.length; i++) {
             total += +obj[i].donation;
         }
-        total += +self.general().donation();
-        self.totalDonation(total);
+        self.totalDonation(total + +self.general().donation());
+
+        //  Update the form
+        var mainForm = $('#main-form');
+        mainForm.find('input[name=currency]').val(selectedCurrency().name);
+        mainForm.find('input[name=total]').val(+self.general().donation() + total);
+        mainForm.find('input[name=totalGeneral]').val(+self.general().donation());
+        mainForm.find('input[name=totalCampaigns]').val(total);
     };
 
     // ***** MAKE PAYMENT  ***** //
 
     self.makePayment = function() {
-        console.log(
-            'General fund donation: ' + self.general().donation() + '\n' +
-            'Campaigns donated to: ' + self.donatedCampaigns() + '\n' +
-            'Donation total: ' + self.totalDonation()
-        );
 
-    }
-
+        $('#main-form').submit();
+    };
 };
 
-var generalCampaignData = {
-    name: "General",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    department: "Donation",
-    donation: ko.observable(0)
-};
-
-var campaignsData = [
-    {
-        name: "Abacus",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        department: "Donation",
-        donation: ko.observable('')
-    },
-    {
-        name: "Biscuit",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        department: "Donation",
-        donation: ko.observable('')
-    },
-    {
-        name: "Crumpet",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        department: "Donation",
-        donation: ko.observable('')
-    },
-    {
-        name: "Yemen Appeal", 
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.",
-        department: "Health",
-        donation: ko.observable('')
-    },
-    {
-        name: "Third one", 
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.",
-        department: "Health",
-        donation: ko.observable('')
-    },
-    {
-        name: "Water fund", 
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.",
-        department: "Health",
-        donation: ko.observable('')
-    },
-    {
-        name: "Tableegh",
-        description: "https://www.world-federation.org/content/tableegh",
-        department: "Donation",
-        donation: ko.observable('')
-    },
-    {
-        name: "Darjeeling",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        department: "Donation",
-        donation: ko.observable('')
-    }
-];
-
-ko.applyBindings(new donationViewModel(generalCampaignData,campaignsData));
+ko.applyBindings(
+    new donationViewModel(
+        window.donation.currencies,
+        window.donation.campaignsGeneral,
+        window.donation.campaignsAll
+    )
+);
