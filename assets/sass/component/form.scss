@@ -57,8 +57,8 @@ label {
 
 .search-dropdown {
     background: #fff;
-    border: solid 1px #ccc;
-    border-bottom: 0;
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
     position: absolute;
     width: 100%;
     z-index: 20;
@@ -67,9 +67,11 @@ label {
 .search-result {
     border-bottom: solid 1px #ccc;
     cursor: pointer;
+    display: block;
     padding: 12px;
     &:hover {
         background: #f9f9f9;
         color: $brand-color3;
+        text-decoration: none;
     }
 }

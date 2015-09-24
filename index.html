@@ -22,11 +22,7 @@
                 <div class="pull-right">
                     <div class="island--micro">
                         <label for="currency">Currency</label>
-                        <select name="currency" id="currency">
-                            <option value="GBP">GBP</option>
-                            <option value="EUR">EUR</option>
-                            <option value="USD">USD</option>
-                        </select>
+                        <select data-bind="options: currencies, optionsText: 'name', value: selectedCurrency"></select>
                     </div>
                 </div>
 
@@ -35,14 +31,14 @@
                 <div class="panel panel-default panel-donation">
                     <div class="panel-body">
                         <h1 class="panel-heading text-center">Make a donation or payment</h1>
-                        <form action="">
+                        <form action="" data-bind="submit: submitGeneralDonation">
                             <label for="general-donation">Donate to the general fund</label>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <div class="input-icon-container">
-                                            <span class="input-icon">&pound;</span>
-                                            <input data-bind="textInput: generalDonation, valueUpdate: 'afterkeydown'" id="general-donation" type="number" placeholder="Enter an amount" class="form-control">
+                                            <span class="input-icon" data-bind="text: self.selectedCurrency().symbol"></span>
+                                            <input data-bind="textInput: generalDonation, valueUpdate: 'afterkeydown'" step="any" min="0" id="general-donation" type="number" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -64,8 +60,8 @@
                                 <!-- ko if: (campaignSearch().length && showSearchResults) -->
                                     <div class="search-dropdown" 
                                          data-bind="foreach: filteredCampaigns">
-                                        <div tabindex="10" class="search-result" data-bind="text: name, click: $parent.selectCampaign">
-                                        </div>
+                                        <a tabindex="11" class="search-result" data-bind="text: name, click: $parent.selectCampaign">
+                                        </a>
                                     </div>
                                 <!-- /ko -->
                             </div>
@@ -82,8 +78,8 @@
                                     <label for="campaign1">Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
-                                            <span class="input-icon">&pound;</span>
-                                            <input data-bind="textInput: donation, valueUpdate: 'afterkeydown'" type="number" placeholder="Enter an amount" class="form-control">
+                                            <span class="input-icon" data-bind="text: self.selectedCurrency().symbol"></span>
+                                            <input data-bind="textInput: donation, valueUpdate: 'afterkeydown'" type="number" step="any" min="0" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -105,15 +101,15 @@
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description"></p>
                                 <form action="">
-                                    <label for="campaign1">Payment</label>
+                                    <label>Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
-                                            <span class="input-icon">&pound;</span>
-                                            <input id="campaign1" data-bind="textInput: donation"  type="number" placeholder="Enter an amount" class="form-control">
+                                            <span class="input-icon" data-bind="text: self.selectedCurrency().symbol"></span>
+                                            <input data-bind="textInput: donation" type="number" step="any" min="0" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="submit" class="btn btn-disabled btn-block" value="Add to your payments">
+                                        <input type="submit" data-bind="click: $parent.submitCampaignPayment" class="btn btn-default btn-block" value="Add to your payments">
                                     </div>
                                 </form>
                                 <hr>
@@ -133,14 +129,14 @@
                                 </button>
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description"></p>
-                                <form action="">
+                                <form data-bind="submit: $parent.updateCampaignPayment">
                                     <label for="campaign2">Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="row">
                                             <div class="col-sm-9">
                                                 <div class="input-icon-container">
-                                                    <span class="input-icon">&pound;</span>
-                                                    <input data-bind="textInput: donation" id="campaign2" type="number" placeholder="Enter an amount" class="form-control">
+                                                    <span class="input-icon" data-bind="text: self.selectedCurrency().symbol"></span>
+                                                    <input data-bind="textInput: donation" type="number" step="any" min="0" placeholder="Enter an amount" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">

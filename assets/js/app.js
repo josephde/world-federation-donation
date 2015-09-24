@@ -13,10 +13,18 @@ var Campaign = function(name, description, department, donation) {
 
 var twoDecimalPlaces = function(value) {
     return value.toFixed(2);
-}
+} 
 
 var donationViewModel = function(campaigns) {
     var self = this;
+
+    self.currencies = ko.observableArray([
+        { name: 'GBP', symbol: '£' },
+        { name: 'EUR', symbol: '€' },
+        { name: 'USD', symbol: '$' }
+    ]);
+
+    selectedCurrency = ko.observable();
 
     // All campaigns
     self.campaigns = ko.observableArray(campaigns);
@@ -35,8 +43,7 @@ var donationViewModel = function(campaigns) {
     // Total
     self.total = ko.computed(function(){
         var total = 0;
-        total += parseInt(self.generalDonation());
-        console.log(self.donatedCampaigns()[0]); // .donation errors
+        total = parseFloat(self.generalDonation());
         return total;
     });
 
@@ -65,13 +72,13 @@ var donationViewModel = function(campaigns) {
 
     // After filling in payment field, click 'add to your payments'
     self.submitCampaignPayment = function(){
+        self.campaigns.remove(this);
         self.selectedCampaigns.remove(this);
         self.donatedCampaigns.unshift({
             name: this.name,
             description: this.description,
             donation: this.donation()
         });
-        console.log(self.donatedCampaigns()[0].donation);
     };
 
     // Toggle visibility of all campaigns
@@ -85,6 +92,16 @@ var donationViewModel = function(campaigns) {
         self.donatedCampaigns.remove(this);
     }
 
+    self.updateCampaignPayment = function() {
+        console.log(self.donatedCampaigns());
+    }
+
+    // General donation
+
+    self.submitGeneralDonation = function() {
+
+    }
+
 };
 
 
@@ -93,49 +110,49 @@ var campaignsData = [
         name: "Abacus",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         department: "Donation",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Biscuit",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         department: "Donation",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Crumpet",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         department: "Donation",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Yemen Appeal", 
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.",
         department: "Health",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Third one", 
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.",
         department: "Health",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Water fund", 
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.",
         department: "Health",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Tableegh",
         description: "https://www.world-federation.org/content/tableegh",
         department: "Donation",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     },
     {
         name: "Darjeeling",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         department: "Donation",
-        donation: ko.observable(0)
+        donation: ko.observable('')
     }
 ];
 
