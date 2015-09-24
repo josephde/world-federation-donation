@@ -138,6 +138,16 @@ var donationViewModel = function(general, campaigns) {
         self.totalDonation(total);
     };
 
+    // ***** MAKE PAYMENT  ***** //
+
+    self.makePayment = function() {
+        console.log(
+            'General fund donation: ' + self.general().donation() + '\n' +
+            'Campaigns donated to: ' + self.donatedCampaigns() + '\n' +
+            'Donation total: ' + self.totalDonation()
+        );
+
+    }
 
 };
 

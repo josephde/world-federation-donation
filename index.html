@@ -53,16 +53,17 @@
                         </div>
 
                         <label for="search-campaigns">Search for a campaign or cause</label>
-                        <form action="">
+                        <form action="" data-bind>
                             <div class="form-group search-input input-icon-container">
                                 <span class="input-icon glyphicon glyphicon-search" aria-hidden="true"></span>
-                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="textInput: campaignSearch, valueUpdate: 'afterkeydown'" placeholder="Search for a campaign or cause">
+                                <input type="search" id="search-campaigns" class="form-control search-campaigns" data-bind="textInput: campaignSearch, valueUpdate: 'afterkeydown'" required="required" placeholder="Search for a campaign or cause">
                                 <!-- ko if: (campaignSearch().length && showSearchResults) -->
-                                    <div class="search-dropdown" 
+                                    <ul class="search-dropdown list-unstyled" 
                                          data-bind="foreach: filteredCampaigns">
-                                        <a tabindex="11" class="search-result" data-bind="text: name, click: $parent.selectCampaign">
-                                        </a>
-                                    </div>
+                                        <li>
+                                            <a class="search-result" data-bind="text: name, click: $parent.selectCampaign"></a>
+                                        </li>
+                                    </ul>
                                 <!-- /ko -->
                             </div>
                         </form>
@@ -182,7 +183,9 @@
                                     <span data-bind="text: totalDonation()"></span>
                                 </div>
                             </div>
-                            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Make Payment">
+                            <form data-bind="submit: makePayment">
+                                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Make Payment">
+                            </form>
                         <!-- /ko -->
                     </div>
                 </div>
