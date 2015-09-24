@@ -1,8 +1,24 @@
+// Utility and extenders
+
 ko.utils.stringStartsWith = function(string, startsWith) {
     string = string || "";
     if (startsWith.length > string.length) return false;
     return string.substring(0, startsWith.length) === startsWith;
 };
+
+ko.extenders.numeric = function(target, precision) {
+    var result = ko.dependentObservable({
+        read: function() {
+            return target().toFixed(precision); 
+        },
+        write: target 
+    });
+    
+    result.raw = target;
+    return result;
+};
+
+// Create campaign model
 
 var Campaign = function(name, description, department, donation) {
     self.name = name;
@@ -11,13 +27,12 @@ var Campaign = function(name, description, department, donation) {
     self.donation = donation;
 };
 
-var twoDecimalPlaces = function(value) {
-    return value.toFixed(2);
-} 
-
-var donationViewModel = function(campaigns) {
+var donationViewModel = function(general, campaigns) {
     var self = this;
 
+    // ***** INSTANTIATE ARRAYS AND VARS  ***** //
+
+    // Currency picker
     self.currencies = ko.observableArray([
         { name: 'GBP', symbol: '£' },
         { name: 'EUR', symbol: '€' },
@@ -25,6 +40,12 @@ var donationViewModel = function(campaigns) {
     ]);
 
     selectedCurrency = ko.observable();
+
+    // Grand total
+    self.totalDonation = ko.observable(0).extend({ numeric: 2});
+
+    // General campaign
+    self.general = ko.observable(general);
 
     // All campaigns
     self.campaigns = ko.observableArray(campaigns);
@@ -38,22 +59,17 @@ var donationViewModel = function(campaigns) {
     self.campaignSearch = ko.observable('');
     self.showSearchResults = ko.observable(true);
     self.showAllCampaigns = ko.observable(false);
-    self.generalDonation = ko.observable();
 
-    // Total
-    self.total = ko.computed(function(){
-        var total = 0;
-        total = parseFloat(self.generalDonation());
-        return total;
-    });
+    // ***** SEARCH CAMPAIGNS  ***** //
 
-    // Search for campaign / cause
     self.filteredCampaigns = ko.computed(function() {
         self.showSearchResults(true);
         return ko.utils.arrayFilter(campaigns, function(r) {
             return (self.campaignSearch().length == 0 || ko.utils.stringStartsWith(r.name.toLowerCase(), self.campaignSearch().toLowerCase()))
         });
     });
+
+    // ***** ADDING DONATIONS  ***** //
 
     // After searching, choose a campaign
     self.selectCampaign = function(){
@@ -68,6 +84,7 @@ var donationViewModel = function(campaigns) {
     self.deselectCampaign = function() {
         self.campaigns.push(this);
         self.selectedCampaigns.remove(this);
+        self.calculateTotal();
     }
 
     // After filling in payment field, click 'add to your payments'
@@ -79,6 +96,14 @@ var donationViewModel = function(campaigns) {
             description: this.description,
             donation: this.donation()
         });
+        self.calculateTotal();
+    };
+
+    self.addToGeneralFund = function() {
+        var generalFundVal = $('#general-fund-value').val();
+        self.general().donation(+ generalFundVal);
+        $('#general-fund-value').val('');
+        self.calculateTotal();
     };
 
     // Toggle visibility of all campaigns
@@ -86,24 +111,42 @@ var donationViewModel = function(campaigns) {
         self.showAllCampaigns(!self.showAllCampaigns()); 
     };
 
+    // ***** REMOVING DONATIONS  ***** //
+
     // Click the 'x' to remove a campaign payment - goes back to selected state
-    self.removePayment = function() {
-        self.selectedCampaigns.push(this);
+    self.removeDonation = function() {
+        self.campaigns.unshift(this);
         self.donatedCampaigns.remove(this);
+        self.calculateTotal();
     }
 
-    self.updateCampaignPayment = function() {
-        console.log(self.donatedCampaigns());
+    self.removeGeneralDonation = function() {
+        self.general().donation('');
+        self.calculateTotal();
     }
 
-    // General donation
 
-    self.submitGeneralDonation = function() {
+    // ***** CALCULATE TOTAL  ***** //
 
-    }
+    self.calculateTotal = function() {
+        var obj = self.donatedCampaigns();
+        var total = 0;
+        for (var i = 0; i < obj.length; i++) {
+            total += +obj[i].donation;
+        }
+        total += +self.general().donation();
+        self.totalDonation(total);
+    };
+
 
 };
 
+var generalCampaignData = {
+    name: "General",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    department: "Donation",
+    donation: ko.observable(0)
+};
 
 var campaignsData = [
     {
@@ -156,4 +199,4 @@ var campaignsData = [
     }
 ];
 
-ko.applyBindings(new donationViewModel(campaignsData));
+ko.applyBindings(new donationViewModel(generalCampaignData,campaignsData));

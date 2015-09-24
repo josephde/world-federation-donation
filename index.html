@@ -31,14 +31,14 @@
                 <div class="panel panel-default panel-donation">
                     <div class="panel-body">
                         <h1 class="panel-heading text-center">Make a donation or payment</h1>
-                        <form action="" data-bind="submit: submitGeneralDonation">
+                        <form action="" data-bind="submit: addToGeneralFund">
                             <label for="general-donation">Donate to the general fund</label>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <div class="input-icon-container">
                                             <span class="input-icon" data-bind="text: self.selectedCurrency().symbol"></span>
-                                            <input data-bind="textInput: generalDonation, valueUpdate: 'afterkeydown'" step="any" min="0" id="general-donation" type="number" placeholder="Enter an amount" class="form-control">
+                                            <input step="any" min="0" type="number" placeholder="Enter an amount" class="form-control" id="general-fund-value">
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
@@ -74,7 +74,7 @@
                                 </button>
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description">Allows us to apportion funds as necessary to deal with international crises and emergencies.</p>
-                                <form action="">
+                                <form action="" data-bind="submit: $parent.submitCampaignPayment">
                                     <label for="campaign1">Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
@@ -83,7 +83,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="submit" data-bind="click: $parent.submitCampaignPayment" class="btn btn-default btn-block" value="Add to your payments">
+                                        <input type="submit" class="btn btn-default btn-block" value="Add to your payments">
                                     </div>
                                 </form>
                             </div>
@@ -100,7 +100,7 @@
                             <!-- ko foreach: campaigns -->
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description"></p>
-                                <form action="">
+                                <form action="" data-bind="submit: $parent.submitCampaignPayment">
                                     <label>Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="input-icon-container">
@@ -109,7 +109,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="submit" data-bind="click: $parent.submitCampaignPayment" class="btn btn-default btn-block" value="Add to your payments">
+                                        <input type="submit" class="btn btn-default btn-block" value="Add to your payments">
                                     </div>
                                 </form>
                                 <hr>
@@ -118,18 +118,45 @@
 
                         <hr>
                         
-                        <!-- ko if: donatedCampaigns().length -->
+                        <!-- ko if: donatedCampaigns().length || general().donation() -->
                             <h2 class="heading--bold">Your donations or payments</h2>
                         <!-- /ko -->
                         
+                        <!-- ko if: general().donation() -->
+                            <div class="island island--bordered island--standout">
+                                <button data-bind="click: removeGeneralDonation" type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h3 class="panel-subheading" data-bind="text: general().name"></h3>
+                                <p class="text--muted" data-bind="text: general().description"></p>
+                                <form data-bind="submit: calculateTotal">
+                                    <label for="campaign2">Payment</label>
+                                    <div class="form-group input-icon-container">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <div class="input-icon-container">
+                                                    <span class="input-icon" data-bind="text: self.selectedCurrency().symbol"></span>
+                                                    <input data-bind="textInput: general().donation" type="number" step="any" min="0" placeholder="Enter an amount" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="submit" class="btn btn-default btn-block" value="Update">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        <!-- /ko -->
+
+
                         <!-- ko foreach: donatedCampaigns -->
                             <div class="island island--bordered island--standout">
-                                <button data-bind="click: $parent.removePayment" type="button" class="close" aria-label="Close">
+                                <button data-bind="click: $parent.removeDonation" type="button" class="close" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                                 <h3 class="panel-subheading" data-bind="text: name"></h3>
                                 <p class="text--muted" data-bind="text: description"></p>
-                                <form data-bind="submit: $parent.updateCampaignPayment">
+                                <form data-bind="submit: $parent.calculateTotal">
                                     <label for="campaign2">Payment</label>
                                     <div class="form-group input-icon-container">
                                         <div class="row">
@@ -149,12 +176,14 @@
                         <!-- /ko -->
 
                         <div class="pull-right">
-                            <div class="text--highlight" data-bind="if: total">Total: &pound;<span data-bind="text: twoDecimalPlaces(total())"></span>
+                            <div class="text--highlight">
+                                <!-- ko if: donatedCampaigns().length || general().donation() -->
+                                    Total: <span data-bind="text: self.selectedCurrency().symbol"></span>
+                                    <span data-bind="text: totalDonation()"></span>
+                                <!-- /ko -->
                             </div>
                         </div>
-
                         <input type="submit" class="btn btn-primary btn-lg btn-block" value="Make Payment">
-
                     </div>
                 </div>
             </div>
