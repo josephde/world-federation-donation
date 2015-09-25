@@ -19,6 +19,18 @@ body {
     font-weight: bold;
 }
 
+.heading--thankyou {
+    color: $brand-color3;
+    font-size: 30px;
+    margin-bottom: 1em;
+    b {
+        display: block;
+        font-size: 2em;
+        color: $brand-color6;
+        margin-bottom: 0.5em;
+    }
+}
+
 .text--muted {
     color: #aaa;
 }

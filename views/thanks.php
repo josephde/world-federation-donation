@@ -30,14 +30,12 @@
                         <p class="loading text-center">
                             <img src="<?=$baseUrl?>assets/img/loader.gif" />
                         </p>
-                        <h1 class="text-center">Thanks</h1>
+                        <h1 class="text-center heading--thankyou">
+                            <b class="glyphicon glyphicon-ok"></b>
+                            Thank you, your payment was successful.
+                        </h1>
                         <p class="text-center">
-                            Your payment has been received.
-                        </p>
-                        <p class="text-center">
-                            <a href="<?=$baseUrl?>">
-                                Continue
-                            </a>
+                            Authorisation Code T16876
                         </p>
                     </div>
                 </div>

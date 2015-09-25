@@ -55,47 +55,35 @@ $campaignsGeneral = array(
 /**
  * This array contains all the campaigns/causes
  *
- * @joseph: you'll most likely want to populate this from the XML file
+ * @joseph: you'll most likely want to populate this from the database; a
+ * simple hack for the time being though.
  */
-$campaignsAll = array(
-    array(
-        'name' => 'Abacus',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'department' => 'Donation'
-    ),
-    array(
-        'name' => 'Biscuit',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'department' => 'Donation'
-    ),
-    array(
-        'name' => 'Crumpet',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'department' => 'Donation'
-    ),
-    array(
-        'name' => 'Yemen Appeal',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.',
-        'department' => 'Health'
-    ),
-    array(
-        'name' => 'Third one',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.',
-        'department' => 'Health'
-    ),
-    array(
-        'name' => 'Water fund',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non pharetra ligula, eu rutrum mi.',
-        'department' => 'Health'
-    ),
-    array(
-        'name' => 'Tableegh',
-        'description' => 'https://www.world-federation.org/content/tableegh',
-        'department' => 'Donation'
-    ),
-    array(
-        'name' => 'Darjeeling',
-        'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'department' => 'Donation'
-    )
-);
+
+/**
+ * @link http://gist.github.com/385876
+ */
+function csv_to_array($filename = '', $delimiter = ',')
+{
+    if (!file_exists($filename) || !is_readable($filename)) {
+        return false;
+    }
+
+    $header = null;
+    $data = array();
+    if (($handle = fopen($filename, 'r')) !== false) {
+
+        while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
+
+            if (!$header) {
+                $header = $row;
+            } else {
+                $data[] = array_combine($header, $row);
+            }
+        }
+        fclose($handle);
+    }
+    return $data;
+}
+
+
+$campaignsAll = csv_to_array('temp-funds.csv');
