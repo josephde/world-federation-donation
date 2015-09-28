@@ -40,6 +40,20 @@ label {
     }
 }
 
+.input-checkbox-container {
+    .checkbox-group {
+        position: relative;
+        margin-bottom: 7px;
+        input {
+            position: absolute;
+            top: 1px;
+        }
+        span {
+            margin-left:20px;
+        }
+    }
+}
+
 .search-input {
     .input-icon {
         top: 17px;

@@ -87,3 +87,52 @@ function csv_to_array($filename = '', $delimiter = ',')
 
 
 $campaignsAll = csv_to_array('temp-funds.csv');
+
+foreach ($campaignsAll as &$campaign) {
+    $campaign['attributes'] = array(
+        array(
+            'title' => 'A text attribute',
+            'machine_name' => 'text_attribute',
+            'type' => 'textfield',
+            'value' => 'this is the default value',
+            'required' => '1',
+            'options' => array()
+        ),
+        array(
+            'title' => 'A select attribute',
+            'machine_name' => 'select_attribute',
+            'type' => 'select',
+            'value' => '',
+            'required' => '0',
+            'options' => array(
+                array(
+                    'id' => '1',
+                    'title' => 'An option'
+                ),
+                array(
+                    'id' => '2',
+                    'title' => 'Another option'
+                )
+            )
+        ),
+        array(
+            'title' => 'A checkbox attribute',
+            'machine_name' => 'checkbox_attribute',
+            'type' => 'checkbox',
+            'value' => '',
+            'required' => '0',
+            'options' => array(
+                array(
+                    'id' => '3',
+                    'title' => 'A checkbox option',
+                    'selected' => 1
+                ),
+                array(
+                    'id' => '4',
+                    'title' => 'Another checkbox option',
+                    'selected' => 0
+                )
+            )
+        )
+    );
+}

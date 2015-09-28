@@ -19,23 +19,16 @@ ko.extenders.numeric = function(target, precision) {
 };
 
 // Create campaign model
-
-var Campaign = function(name, description, department, donation) {
-    self.name = name;
-    self.description = description;
-    self.department = department;
-    self.donation = donation;
-};
-
 var donationViewModel = function(currencies, general, campaigns) {
     var self = this;
+    var i;
 
     // ***** INSTANTIATE ARRAYS AND VARS  ***** //
 
     //  Set up observables
     general.donation = ko.observable(0);
 
-    for (var i = 0; i < campaigns.length; i++) {
+    for (i = 0; i < campaigns.length; i++) {
 
         campaigns[i].donation = ko.observable(0);
     }
@@ -44,7 +37,7 @@ var donationViewModel = function(currencies, general, campaigns) {
     self.currencies = ko.observableArray(currencies);
 
     // Set the default currency
-    for (var i = 0; i < currencies.length; i++) {
+    for (i = 0; i < currencies.length; i++) {
 
         if (currencies[i].selected) {
             selectedCurrency = ko.observable(self.currencies()[i]);
@@ -75,7 +68,7 @@ var donationViewModel = function(currencies, general, campaigns) {
     self.filteredCampaigns = ko.computed(function() {
         self.showSearchResults(true);
         return ko.utils.arrayFilter(campaigns, function(r) {
-            return (self.campaignSearch().length == 0 || ko.utils.stringStartsWith(r.name.toLowerCase(), self.campaignSearch().toLowerCase()))
+            return (self.campaignSearch().length === 0 || ko.utils.stringStartsWith(r.name.toLowerCase(), self.campaignSearch().toLowerCase()));
         });
     });
 
@@ -95,17 +88,13 @@ var donationViewModel = function(currencies, general, campaigns) {
         self.campaigns.push(this);
         self.selectedCampaigns.remove(this);
         self.calculateTotal();
-    }
+    };
 
     // After filling in payment field, click 'add to your payments'
     self.submitCampaignPayment = function(){
         self.campaigns.remove(this);
         self.selectedCampaigns.remove(this);
-        self.donatedCampaigns.unshift({
-            name: this.name,
-            description: this.description,
-            donation: this.donation()
-        });
+        self.donatedCampaigns.unshift(this);
         self.calculateTotal();
     };
 
@@ -128,23 +117,41 @@ var donationViewModel = function(currencies, general, campaigns) {
         self.campaigns.unshift(this);
         self.donatedCampaigns.remove(this);
         self.calculateTotal();
-    }
+    };
 
     self.removeGeneralDonation = function() {
         self.general().donation('');
         self.calculateTotal();
-    }
+    };
 
 
     // ***** CALCULATE TOTAL  ***** //
 
     self.calculateTotal = function() {
+
+        var campaignDetails = $('#totals-campaign-details');
+
+        campaignDetails.empty();
+
         var obj = self.donatedCampaigns();
         var total = 0;
         for (var i = 0; i < obj.length; i++) {
-            total += +obj[i].donation;
+
+            total += +obj[i].donation();
+
+            campaignDetails
+            .append(
+                    $('<input>')
+                    .attr('name', 'campaignDetail[' + i + '][id]')
+                    .val(obj[i].id)
+            )
+            .append(
+                    $('<input>')
+                    .attr('name', 'campaignDetail[' + i + '][total]')
+                    .val(+obj[i].donation())
+            );
         }
-        self.totalDonation(total + +self.general().donation());
+        self.totalDonation(total + self.general().donation());
 
         //  Update the form
         var mainForm = $('#main-form');

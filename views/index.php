@@ -92,6 +92,31 @@
                                             <input data-bind="textInput: donation, valueUpdate: 'afterkeydown'" type="number" step="any" min="0" required="required" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
+                                    <!-- ko foreach: attributes -->
+                                        <label for="campaign1" data-bind="html: title"></label>
+                                        <div class="form-group">
+                                            <!-- ko if: type === 'textfield' -->
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" required="required" class="form-control">
+                                            <!-- /ko -->
+                                            <!-- ko if: type === 'select' -->
+                                                <select data-bind="options: options,
+                                                                   optionsText: 'title',
+                                                                   optionsValue: 'id',
+                                                                   value: $parent.value,
+                                                                   optionsCaption: 'Choose...'" class="form-control"></select>
+                                            <!-- /ko -->
+                                            <!-- ko if: type === 'checkbox' -->
+                                                <!-- ko foreach: options -->
+                                                    <div class="input-checkbox-container">
+                                                        <div class="checkbox-group">
+                                                            <input data-bind="checked: selected" type="checkbox" />
+                                                            <span data-bind="html: title"></span>
+                                                        </div>
+                                                    </div>
+                                                <!-- /ko -->
+                                            <!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
                                     <div class="form-group">
                                         <input type="submit" class="btn btn-default btn-block" value="Add to your payments">
                                     </div>
@@ -118,6 +143,31 @@
                                             <input data-bind="textInput: donation" type="number" step="any" min="0" placeholder="Enter an amount" class="form-control">
                                         </div>
                                     </div>
+                                    <!-- ko foreach: attributes -->
+                                        <label for="campaign1" data-bind="html: title"></label>
+                                        <div class="form-group">
+                                            <!-- ko if: type === 'textfield' -->
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" required="required" class="form-control">
+                                            <!-- /ko -->
+                                            <!-- ko if: type === 'select' -->
+                                                <select data-bind="options: options,
+                                                                   optionsText: 'title',
+                                                                   optionsValue: 'id',
+                                                                   value: $parent.value,
+                                                                   optionsCaption: 'Choose...'" class="form-control"></select>
+                                            <!-- /ko -->
+                                            <!-- ko if: type === 'checkbox' -->
+                                                <!-- ko foreach: options -->
+                                                    <div class="input-checkbox-container">
+                                                        <div class="checkbox-group">
+                                                            <input data-bind="checked: selected" type="checkbox" />
+                                                            <span data-bind="html: title"></span>
+                                                        </div>
+                                                    </div>
+                                                <!-- /ko -->
+                                            <!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
                                     <div class="form-group">
                                         <input type="submit" class="btn btn-default btn-block" value="Add to your payments">
                                     </div>
@@ -181,6 +231,31 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- ko foreach: attributes -->
+                                        <label for="campaign1" data-bind="html: title"></label>
+                                        <div class="form-group">
+                                            <!-- ko if: type === 'textfield' -->
+                                                <input data-bind="textInput: value, valueUpdate: 'afterkeydown'" type="text" required="required" class="form-control">
+                                            <!-- /ko -->
+                                            <!-- ko if: type === 'select' -->
+                                                <select data-bind="options: options,
+                                                                   optionsText: 'title',
+                                                                   optionsValue: 'id',
+                                                                   value: $parent.value,
+                                                                   optionsCaption: 'Choose...'" class="form-control"></select>
+                                            <!-- /ko -->
+                                            <!-- ko if: type === 'checkbox' -->
+                                                <!-- ko foreach: options -->
+                                                    <div class="input-checkbox-container">
+                                                        <div class="checkbox-group">
+                                                            <input data-bind="checked: selected" type="checkbox" />
+                                                            <span data-bind="html: title"></span>
+                                                        </div>
+                                                    </div>
+                                                <!-- /ko -->
+                                            <!-- /ko -->
+                                        </div>
+                                    <!-- /ko -->
                                 </form>
                             </div>
                         <!-- /ko -->
@@ -202,12 +277,15 @@
         </div>
     </div>
     <form action="<?=$baseUrl?>" method="POST" id="main-form">
-        <input type="hidden" name="route" value="gotoGateway" />
-        <input type="hidden" name="cart_id" value="<?=session_id()?>" >
-        <input type="hidden" name="currency" value="" />
-        <input type="hidden" name="total" value="" />
-        <input type="hidden" name="totalGeneral" value="" />
-        <input type="hidden" name="totalCampaigns" value="" />
+        <input type="text" name="route" value="gotoGateway" />
+        <input type="text" name="cart_id" value="<?=session_id()?>" >
+        <input type="text" name="currency" value="" />
+        <input type="text" name="total" value="" />
+        <input type="text" name="totalGeneral" value="" />
+        <input type="text" name="totalCampaigns" value="" />
+        <div id="totals-campaign-details">
+
+        </div>
     </form>
     <script src="<?=$baseUrl?>assets/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="<?=$baseUrl?>assets/bower_components/knockout/dist/knockout.js"></script>
