@@ -50,89 +50,87 @@ $campaignsGeneral = array(
     'department'  => 'Donation'
 );
 
-// --------------------------------------------------------------------------
+//var_dump($campaignsAll);
+// $campaignsAll = csv_to_array('temp-funds.csv');
 
-/**
- * This array contains all the campaigns/causes
- *
- * @joseph: you'll most likely want to populate this from the database; a
- * simple hack for the time being though.
- */
+/*
+* This series of nested loops recursively grabs all of the campaigns, if the campaign has attributes it grabs all attributes for the campaign being iterated over 
+* and if the attribute has options it does the same for the attribute being iterated over. It then pushes the components to an multidimensional array.
+*
+* @Pablo the array is ordered in a hierarchical format. The campaign main details are located at the root of the array and the attributes and options are nested in the $fund['attribute']
+*and $fund['attribute']['index']['option'] (where index represents a sequential integer). This should make it reasonably easy to traverse the array using for loops. I have included some examples below
+*
+* Examples:
+*
+* $fund['name'] - Returns the name of the currently iterated fund
+*
+* $fund['attributes']['0']['machine_name'] - Returns the machine name of the first attribute belonging to the currently iterated fund
+*
+* $fund['attributes']['0']['options']['1']['title'] - Returns the title of the second option of the first attribute belonging to the currently iterated fund
+*
+* Hopefully this should make it reasonably easy to retrieve data from related tables
+*
+* I use Krumo to look at data within complex arrays as I find it much easier than PHP's native array_dump() which is frankly a bit shite,
+* i've committed krumo's files so if you want to use it just correct the path and URL inside the ini file.
+*/
 
-/**
- * @link http://gist.github.com/385876
- */
-function csv_to_array($filename = '', $delimiter = ',')
-{
-    if (!file_exists($filename) || !is_readable($filename)) {
-        return false;
-    }
+	
+//Get Attributes
+$fund= array();
+$attribute_array = array();
+foreach ($cart->funds as &$campaign) {
+	if ($campaign['has_attributes'] == '1') {
+		$sql = "SELECT * FROM attributes WHERE fund_id = ?";
+		$query = $cart->db->prepare($sql);
+		$query->execute(array($campaign['fund_id']));
+		$attribute = $query->fetchAll();
+		
+		//Get options
+		foreach ($attribute as &$attribute) {
+			if($attribute['has_options'] == "1") {
+				$sql = "SELECT * FROM options WHERE parent_id = ?";
+				$query = $cart->db->prepare($sql);
+				$query->execute(array($attribute['attribute_id']));
+				$option = $query->fetchAll();
+				
+				$attribute['options'] = $option;								
+				$attribute_array = array_merge($attribute, $attribute['options']);
+				
+				
+				
+			} else if ($attribute['has_options'] == "0") {				
+				$attribute_array = $attribute;					
+				$campaign['attributes'][] = $attribute_array;
+				
+			}
+			
+		}
+		
+		$campaign['attributes'][] = $attribute_array;
+			
+		
+		
+				
+		$fund[] = array_push($fund, array_merge($campaign, $campaign['attributes']));		
+		
+		
+	} else if ($campaign['has_attributes'] == '0'){
+	
+		$fund[] = array_push($fund, $campaign);
+	
+	}
+}	
+	
 
-    $header = null;
-    $data = array();
-    if (($handle = fopen($filename, 'r')) !== false) {
+	
+foreach($fund as $key=>$value) {
+		if (is_int($value)) {
+			unset($fund[$key]);		
+			$fund_indexed = array_values($fund);
+			
+		}
+	}
 
-        while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
-
-            if (!$header) {
-                $header = $row;
-            } else {
-                $data[] = array_combine($header, $row);
-            }
-        }
-        fclose($handle);
-    }
-    return $data;
-}
-
-
-$campaignsAll = csv_to_array('temp-funds.csv');
-
-foreach ($campaignsAll as &$campaign) {
-    $campaign['attributes'] = array(
-        array(
-            'title' => 'A text attribute',
-            'machine_name' => 'text_attribute',
-            'type' => 'textfield',
-            'value' => 'this is the default value',
-            'required' => '1',
-            'options' => array()
-        ),
-        array(
-            'title' => 'A select attribute',
-            'machine_name' => 'select_attribute',
-            'type' => 'select',
-            'value' => '',
-            'required' => '0',
-            'options' => array(
-                array(
-                    'id' => '1',
-                    'title' => 'An option'
-                ),
-                array(
-                    'id' => '2',
-                    'title' => 'Another option'
-                )
-            )
-        ),
-        array(
-            'title' => 'A checkbox attribute',
-            'machine_name' => 'checkbox_attribute',
-            'type' => 'checkbox',
-            'value' => '',
-            'required' => '0',
-            'options' => array(
-                array(
-                    'id' => '3',
-                    'title' => 'A checkbox option',
-                    'selected' => 1
-                ),
-                array(
-                    'id' => '4',
-                    'title' => 'Another checkbox option',
-                    'selected' => 0
-                )
-            )
-        )
-    );
-}
+// echo $fund_indexed['1']['attributes']['0'];
+	
+$campaignsAll = $fund_indexed;
